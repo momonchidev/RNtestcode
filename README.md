@@ -30,3 +30,14 @@ yarn android
 ```
 
 That's it! Cool, right?
+
+#CRUDCRUD.COM SETUP
+
+1. First Go To https://crudcrud.com/
+2. Copy the token to http.js
+
+```bash
+
+  export const API_URL = "https://crudcrud.com/api/2d1c1106142b4abb99352809a623ae7d/custTbl";
+
+```
