@@ -7,9 +7,9 @@ export const addCustomers = (customers) => ({
 })
 
 
-export const addCustomer = (customer) => ({
+export const addCustomer = customer => ({
     type: actions.ADD_CUSTOMER,
-    payload:{customer}
+    customer
 })
 
 export const updateCustomer = (customer,updated) => ({

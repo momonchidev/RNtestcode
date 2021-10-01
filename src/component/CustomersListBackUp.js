@@ -26,12 +26,6 @@ function CustomersList(props) {
     const [query, setQuery] = useState('');
     let animation = React.createRef();
     const {customers} = useSelector(state => state.dataReducer);
-
-    store.subscribe(()=>{
-        console.log("from subscribe");
-        console.log(customers);
-        console.log(store.getState());
-    });
     
     //useEffect to initialize one time data fetch
    useEffect(() => {

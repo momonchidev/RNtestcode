@@ -29,9 +29,9 @@ const handleSearch = (props,text,setQuery) => {
     props.setQuery(text);
   };
   
-  const contains = ({lastName}, query) => {
+  const contains = ({customer}, query) => {
   
-    if (lastName.includes(query)) {
+    if (customer.lastName.includes(query)) {
       return true;
     }
   

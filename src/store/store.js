@@ -7,5 +7,5 @@ import thunk from 'redux-thunk';
 // export default createStore(reducer, applyMiddleware(thunk));
 
 import customerReducer from '../redux/customerReducer';
-
-export default createStore(customerReducer, applyMiddleware(thunk));
+const store = createStore(customerReducer);
+export default store;

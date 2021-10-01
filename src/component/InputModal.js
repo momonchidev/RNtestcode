@@ -84,17 +84,15 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
             .then(data => {
                 //save to redux store
                 dispatch(addCustomer(obj));
-                console.log("getstate")
-                console.log(store.getState())
 
                 //show success alert
                 alert("Customer successfully added.");
                 
+                //send success response
                 setReceived();
             })
             .catch(error => {
-                //alert(error.message)
-                console.log(error);
+                alert(error.message)
             })
 
       }
