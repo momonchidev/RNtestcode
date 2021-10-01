@@ -31,7 +31,7 @@ yarn android
 
 That's it! Cool, right?
 
-#CRUDCRUD.COM SETUP
+# CRUDCRUD.COM SETUP
 
 1. First Go To https://crudcrud.com/
 2. Copy the token to http.js
