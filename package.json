@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
   },
   "dependencies": {
     "@ant-design/react-native": "^4.2.0",
@@ -32,7 +33,24 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "jest-expo": "^42.1.0"
   },
+  "jest": {
+      "projects": [
+        { "preset": "jest-expo" }
+      ],
+      "collectCoverage": true,
+      "collectCoverageFrom": [
+        "/*.{js,jsx}",
+        "!/coverage/",
+        "!/node_modules/",
+        "!/babel.config.js",
+        "!**/jest.setup.js"
+      ],
+      "transformIgnorePatterns": [
+        "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.|react-navigation|@react-navigation/.|@unimodules/.|unimodules|sentry-expo|native-base|@sentry/.)"
+      ]
+    },
   "private": true
 }
