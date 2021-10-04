@@ -12,12 +12,11 @@ export const addCustomer = customer => ({
     customer
 })
 
-export const updateCustomer = (customer,updated) => ({
+export const updateCustomer = (customer) => ({
     type: actions.UPDATE_CUSTOMER,
     payload:{
-        customer
-    },
-    data:updated
+        _customer:customer
+    }
 })
 
 export const deleteCustomer = id => ({

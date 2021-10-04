@@ -1,3 +1,3 @@
 
 
-export const API_URL = "https://crudcrud.com/api/eb70ce3c33a24834b45bd75abda5887c/custTbl";
+export const API_URL = "https://crudcrud.com/api/fdf91a1d1e024b67acb42f699b4abd86/custTbl";

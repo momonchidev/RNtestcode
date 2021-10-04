@@ -99,3 +99,96 @@ export const inputModalStyle = StyleSheet.create({
         fontWeight:'700'
     }
 });
+
+
+export const viewModalStyle = StyleSheet.create({
+    formContainer: {
+        flex: 1,
+        marginTop:20,
+        paddingLeft:10,
+        paddingRight:10
+    },
+    modalContainer: {
+        flex:1,
+        padding:20
+    },
+    modalHeaderContainer:{
+        marginTop:10,
+        paddingLeft:10
+    },
+    modalCloseBtn:{
+        alignSelf: 'flex-start',
+        marginTop: -5,
+        left:15,
+        position: 'absolute'
+    },
+    editBtn:{
+        alignSelf: 'flex-end',
+        marginTop: -5,
+        right:15,
+        position: 'absolute'
+    },
+    modalTitle:{
+        fontSize:20,
+        fontWeight:'700'
+    }
+});
+
+export const customerViewStyle = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    headerBackgroundImage: {
+      paddingBottom: 20,
+      paddingTop: 35,
+    },
+    headerColumn: {
+      backgroundColor: 'transparent',
+      ...Platform.select({
+        ios: {
+          alignItems: 'center',
+          elevation: 1,
+          marginTop: -1,
+        },
+        android: {
+          alignItems: 'center',
+        },
+      }),
+    },
+    userEmailRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    detailsRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      padding:20
+    },
+    detailsText:{
+      color: '#000',
+      fontSize: 15,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+    userEmailTxt: {
+      color: '#A5A5A5',
+      fontSize: 15,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+    userImage: {
+      borderColor: "gray",
+      borderRadius: 85,
+      borderWidth: 3,
+      height: 170,
+      marginBottom: 15,
+      width: 170,
+    },
+    userNameText: {
+      color: '#FFF',
+      fontSize: 22,
+      fontWeight: 'bold',
+      paddingBottom: 8,
+      textAlign: 'center',
+    },
+  });

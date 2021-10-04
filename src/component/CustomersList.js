@@ -1,6 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { FlatList, Text, StyleSheet, SafeAreaView,Image, View, ActivityIndicator} from 'react-native';
+import { FlatList, Text, StyleSheet, SafeAreaView,Image, View, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import CustomerItemView from './CustomerItemView';
 import SearchHeader from './SearchHeader';
 import {customersListStyle,BG_IMG,BG_IMG_RADIUS} from './style';
@@ -10,11 +10,13 @@ import {useDispatch,useSelector } from 'react-redux';
 import { addCustomer } from '../redux/actions';
 import { API_URL } from '../constant/http';
 import LottieView from 'lottie-react-native';
+import CustomerViewModal from './CustomerViewModal';
+import UpdateCustomerModal from './UpdateCustomerModal';
 
 
 
 const FIXED_ITEM_HEIGHT = 100
-function CustomersList(props) {
+function CustomersList() {
     const customers = useSelector(state => state);
     const dispatch = useDispatch();
 
@@ -22,12 +24,26 @@ function CustomersList(props) {
     const [modalForm, setModalForm] = useState(false);
     const [dataHolder, setDataHolder] = useState([]);
     const [query, setQuery] = useState('');
+
+    
+    const [viewCustomerModal, setViewCustomerModal] = useState(false);
+    const [customerData, setCustomerData] = useState({});
+    
+    const [updateViewModal, setUpdateViewModal] = useState(false);
+
     let animation = React.createRef();
 
     const setReceived = () => {
         setModalForm(false);
         setDataHolder(customers);
     }
+
+    const setUpdatedReceiver = () => {
+        setUpdateViewModal(false);
+        setViewCustomerModal(false);
+        setDataHolder(customers);
+    }
+    
 
 
     //it can be done by useEffect but useLayout is triggered 1st
@@ -70,10 +86,20 @@ function CustomersList(props) {
             );
     };
 
+    const showCustomerView = (customer) => {
+        //console.log(customer);
+        setCustomerData(customer)
+        setViewCustomerModal(true)
+    }
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({index, item }) => {
         return(
-                <CustomerItemView item={item.customer} />
+                <TouchableOpacity 
+                    key={index.toString()} 
+                    onPress={() => showCustomerView(item.customer)}
+          >
+                    <CustomerItemView  item={item.customer} />
+                </TouchableOpacity>
             )
     };
     
@@ -97,14 +123,12 @@ function CustomersList(props) {
                 style={StyleSheet.absoluteFillObject}
                 blurRadius={BG_IMG_RADIUS}
                 />
-
-            
-        
+                
             <View style={customersListStyle.searchHeaderContainer}>
                 <SearchHeader fullData={customers} setFilteredData={setDataHolder} query={query} setQuery={setQuery}/>
             </View>
             {
-            (query !== "" && dataHolder !== undefined && dataHolder.length > 0 ) || customers !== undefined && customers.length > 0?
+            (query !== "" && dataHolder !== undefined && dataHolder.length > 0 ) || query =="" && customers !== undefined && customers.length > 0?
             <FlatList
                 contentContainerStyle={customersListStyle.contentContainerStyle}
                 data={query !== ""?dataHolder:customers}
@@ -116,7 +140,11 @@ function CustomersList(props) {
             />
             :
             <View  style={{alignItems:'center',alignContent:'center'}}>
-                <Text>Oops! It's Empty</Text>
+                {query !== ""?
+                    <Text> No matches found </Text>
+                    :
+                    <Text> Oops! It's Empty </Text>
+                }
             </View>
             
             }
@@ -125,19 +153,20 @@ function CustomersList(props) {
                 setModalVisible={setModalForm} 
                 setReceived={setReceived}
             />
+            <CustomerViewModal 
+                modalVisible={viewCustomerModal}
+                setModalVisible={setViewCustomerModal}
+                showEditView={setUpdateViewModal}
+                customerData={customerData} 
+            />
+            <UpdateCustomerModal
+                modalVisible={updateViewModal}
+                setModalVisible={setUpdateViewModal} 
+                setUpdatedReceiver={setUpdatedReceiver}
+                customerData={customerData}  
+                />
         </SafeAreaView>
     );
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center"
-    },
-    horizontal: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      padding: 10
-    }
-  });
   
 export default CustomersList;

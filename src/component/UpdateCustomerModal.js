@@ -8,16 +8,17 @@ import { Button, Modal, TouchableOpacity, Text, View, ActivityIndicator, ScrollV
 import {customersListStyle,inputModalStyle} from './style';
 import CustomInput from './CustomInput';
 import axios from 'axios';
-import { addCustomer } from './../redux/actions';
+import { updateCustomer } from './../redux/actions';
 import { API_URL } from '../constant/http';
 import moment from 'moment';
 import Loader from './Loader';
-const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
+const UpdateCustomerModal = ({modalVisible,setModalVisible,setUpdatedReceiver,customerData})=>  {
 
     // pass the close function to child
     const handleCloseModal = () =>{
         setModalVisible(false);
     }
+    //console.log(customerData);
 
     //==================================================================================================
     // intialization of values
@@ -56,43 +57,30 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
       });
 
       //useMemo for Formik and yup issue in isValid always false 
-      const initialValues = useMemo(() => {
-        return {
-            firstName: '',
-            lastName: '',
-            dob:'',
-            email:'',
-            phone:'',
-            address:''
-        }
-      }, []);
-
-
-      //useEffect to run 1 time the initialValues
-      useEffect(() => {
-        formSchema
-          .validate(initialValues)
-          .then((res) => setIsInitialValid(true))
-          .catch((err) => setIsInitialValid(false));
-      }, [initialValues]);
-
-
+      const initialValues = {
+            firstName: customerData.firstName,
+            lastName: customerData.lastName,
+            dob: customerData.dob,
+            email: customerData.email,
+            phone:customerData.phone,
+            address:customerData.address
+        };
 
       //on save customer
       const onSubmitCustomer = (obj) => {
-        let url = API_URL;
-        axios.post(url, obj)
+        let url = API_URL+"/"+customerData._id;
+        axios.put(url, obj)
             .then(res => res.data)
             .then(data => {
-                
                 //save to redux store
-                dispatch(addCustomer({...obj,_id:data._id}));
+                dispatch(updateCustomer(obj));
 
                 //show success alert
-                alert("Customer successfully added.");
+                alert("Customer updated successfully.");
                 
                 //send success response
-                setReceived();
+                setUpdatedReceiver();
+                //setLoading(false)
             })
             .catch(error => {
                 alert(error.message)
@@ -113,9 +101,6 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
 
     return (
         <>    
-            <TouchableOpacity onPress={() => setModalVisible(true)} style={customersListStyle.fab}>
-                <Text style={customersListStyle.fabIcon}>+</Text>
-            </TouchableOpacity>
             {isLoading?
                 <View style={{flex : 1, justifyContent: 'center', alignItems: 'center',}}>
                     <Loader />
@@ -131,7 +116,7 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
                     <ScrollView>
                         <View style={inputModalStyle.modalContainer}>
                             <View style={inputModalStyle.modalHeaderContainer}>
-                                <Text style={inputModalStyle.modalTitle}>Add new Customer</Text>
+                                <Text style={inputModalStyle.modalTitle}>Edit Customer</Text>
                                 <TouchableOpacity onPress={() => setModalVisible(false)}  style={inputModalStyle.modalCloseBtn}>
                                     <AntDesign name="closecircleo" size={24} color="black" />
                                 </TouchableOpacity>
@@ -142,14 +127,9 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
                                 validateOnMount={true} 
                                 validationSchema={formSchema}
                                 onSubmit={(values,actions) => {
+                                    let _id = customerData.id;
+                                    let newObj = {...values,id:_id};
                                     setLoading(true)
-                                    //add generated id 
-                                    let dobx = moment(values.dob).format('yyyyMMdd')
-                                    let _custCode = values.firstName+values.lastName+dobx;
-                                    _custCode = _custCode.replace(/ /g,'').toLowerCase();
-
-                                    let _id = generateID();
-                                    let newObj = {...values,id:_id,custCode:_custCode};
                                     setCustomer(newObj);
                                     setTimeout(() => {
                                         onSubmitCustomer(newObj);
@@ -169,6 +149,7 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
                                         name="lastName"
                                         label="Last name"
                                         placeholder="Enter your last name ..."
+                                        setFieldValue={props.setFieldValue}
                                     />
                                     <Field
                                         component={CustomInput}
@@ -214,4 +195,4 @@ const InputModal = ({modalVisible,setModalVisible,setReceived})=>  {
     );
 }
 
-export default InputModal;
+export default UpdateCustomerModal;

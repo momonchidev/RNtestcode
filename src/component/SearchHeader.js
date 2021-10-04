@@ -30,8 +30,7 @@ const handleSearch = (props,text,setQuery) => {
   };
   
   const contains = ({customer}, query) => {
-  
-    if (customer.lastName.includes(query)) {
+    if (customer.lastName.toLowerCase().includes(query.toLowerCase()) || customer.firstName.toLowerCase().includes(query.toLowerCase())) {
       return true;
     }
   
